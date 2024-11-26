@@ -3,14 +3,13 @@ import axios from 'axios';
 export const fetchData = async (page, dataType, frequence) => {
   try {
     //if (dataType=="current"){}
-
+    /*
     console.log(page,dataType,frequence)
     const response = await axios.get('http://192.168.1.31:9090/api/data', { //10.0.2.2 for android
       params: { page, dataType, frequence },
-    });
+    });*/
     //const responselist = response.data.split(',').map(Number);
-    console.log(typeof(responselist))
-    /*
+    
     if (frequence=="yearly"){
       if (dataType=="pause_time"){
         var response = {data:[page,12,13,14,15,16,17,18,19,20,21,12]}
@@ -48,8 +47,8 @@ export const fetchData = async (page, dataType, frequence) => {
 
       }
     }
-    */
-    return responselist; 
+    
+    return response; 
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;

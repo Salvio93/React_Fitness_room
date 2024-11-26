@@ -24,20 +24,20 @@ export default function TabTwoScreen() {
   const handleFetchData = async(direction : string, dataType: string, frequence='yearly') =>{
     try {
       if (direction==="current"){
-          const current_data = await fetchData(0, dataType,frequence);
+          //const current_data = await fetchData(0, dataType,frequence);
           console.log("aaaaaaaaa")
 
-          console.log(current_data)
+          //console.log(current_data)
           console.log("avvvvvvv")
           setChartData((prevData) => ({
             ...prevData,
-            [dataType]: {
+            ["num_visits"]: {
               data_page : 0,
               labels: ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
-              datasets: [{ data: current_data }],
+              datasets: [{ data: [15,2,3,4,5,6,7,8,9,10,11,12] }],
             },
           }));
-          /*
+          
           setChartData((prevData) => ({
             ...prevData,
             ["pause_time"]: {
@@ -54,7 +54,7 @@ export default function TabTwoScreen() {
               labels: ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
               datasets: [{ data: [10,2,3,4,5,6,7,8,9,10,11,12] }],
             },
-          }));*/
+          }));
 
 
       }else{
