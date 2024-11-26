@@ -49,9 +49,17 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="details"
+        name="monthly"
         options={{ href: null, }}
       />
+       <Tabs.Screen
+        name="weekly"
+        options={{ href: null, }}
+      />
+      <Tabs.Screen
+      name="dayly"
+      options={{ href: null, }}
+    />
 
 
     </Tabs>

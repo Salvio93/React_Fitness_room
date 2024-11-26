@@ -1,19 +1,55 @@
 import axios from 'axios';
 
-export const fetchData = async (page, dataType) => {
+export const fetchData = async (page, dataType, frequence) => {
   try {
-    /*const response = await axios.get(`http://your-backend-url/api/data`, {
-      params: { page, type: dataType },
-    });*/
+    //if (dataType=="current"){}
 
-      if (dataType=='pause'){ var response= {data:[page,8,7,6,5,4,3,2,1], labels:['date1','date2','date3','date4','date5','date6','date7','date8','date9']}}
-      else{  var response = {data:[page,11,10,9,8,7,6,5,4,3,2,1]}
-      }      
+    console.log(page,dataType,frequence)
+    const response = await axios.get('http://192.168.1.31:9090/api/data', { //10.0.2.2 for android
+      params: { page, dataType, frequence },
+    });
+    //const responselist = response.data.split(',').map(Number);
+    console.log(typeof(responselist))
+    /*
+    if (frequence=="yearly"){
+      if (dataType=="pause_time"){
+        var response = {data:[page,12,13,14,15,16,17,18,19,20,21,12]}
+  
+        }else{
+          var response = {data:[page,20,21,22,23,2,24,2,25,2,26,20]}
+  
+        }
+    }
+    if (frequence=="monthly"){
+      if (dataType=="pause_time"){
+      var response = {data:[page,5,6,4,5]}
 
-    //if dataType = pause: reponse = {data:[seance1moyenne,seance2moyenne]} ou data:[[120s,200s,250s],[...]]
+      }else{
+        var response = {data:[page,10,11,9,10]} //week 5 is 0 for fevr
 
+      }
+    }
+    if (frequence=="weekly"){
+      if (dataType=="pause_time"){
+      var response = {data:[page,7,8,7,6,5,7]}
 
-    return response; 
+      }else{
+        var response = {data:[page,14,15,16,13,12,14]}
+
+      }
+    }
+    if (frequence=="dayly"){//fetch time en sec de seance
+
+      if (dataType=="pause_time"){
+      var response = {data:[page,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5,5,5]}
+
+      }else{
+        var response = {data:[page,0,0,0,0,0,0,0,0,5,5,5,5,5,0,0,0,0]}
+
+      }
+    }
+    */
+    return responselist; 
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;

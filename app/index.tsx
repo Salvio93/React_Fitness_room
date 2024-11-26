@@ -24,6 +24,8 @@ export default function HomeScreen() {
       </ThemedView>
 
 
+      //axios call for data
+
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Données perso</ThemedText>
         <ThemedText>

@@ -1,0 +1,14 @@
+/* eslint-disable */
+import * as Router from 'expo-router';
+
+export * from 'expo-router';
+
+declare module 'expo-router' {
+  export namespace ExpoRouter {
+    export interface __routes<T extends string | object = string> {
+      hrefInputParams: { pathname: Router.RelativePathString, params?: Router.UnknownInputParams } | { pathname: Router.ExternalPathString, params?: Router.UnknownInputParams } | { pathname: `/api_fetch`; params?: Router.UnknownInputParams; } | { pathname: `/dayly`; params?: Router.UnknownInputParams; } | { pathname: `/`; params?: Router.UnknownInputParams; } | { pathname: `/monthly`; params?: Router.UnknownInputParams; } | { pathname: `/profile`; params?: Router.UnknownInputParams; } | { pathname: `/statistic`; params?: Router.UnknownInputParams; } | { pathname: `/style`; params?: Router.UnknownInputParams; } | { pathname: `/weekly`; params?: Router.UnknownInputParams; } | { pathname: `/_sitemap`; params?: Router.UnknownInputParams; };
+      hrefOutputParams: { pathname: Router.RelativePathString, params?: Router.UnknownOutputParams } | { pathname: Router.ExternalPathString, params?: Router.UnknownOutputParams } | { pathname: `/api_fetch`; params?: Router.UnknownOutputParams; } | { pathname: `/dayly`; params?: Router.UnknownOutputParams; } | { pathname: `/`; params?: Router.UnknownOutputParams; } | { pathname: `/monthly`; params?: Router.UnknownOutputParams; } | { pathname: `/profile`; params?: Router.UnknownOutputParams; } | { pathname: `/statistic`; params?: Router.UnknownOutputParams; } | { pathname: `/style`; params?: Router.UnknownOutputParams; } | { pathname: `/weekly`; params?: Router.UnknownOutputParams; } | { pathname: `/_sitemap`; params?: Router.UnknownOutputParams; };
+      href: Router.RelativePathString | Router.ExternalPathString | `/api_fetch${`?${string}` | `#${string}` | ''}` | `/dayly${`?${string}` | `#${string}` | ''}` | `/${`?${string}` | `#${string}` | ''}` | `/monthly${`?${string}` | `#${string}` | ''}` | `/profile${`?${string}` | `#${string}` | ''}` | `/statistic${`?${string}` | `#${string}` | ''}` | `/style${`?${string}` | `#${string}` | ''}` | `/weekly${`?${string}` | `#${string}` | ''}` | `/_sitemap${`?${string}` | `#${string}` | ''}` | { pathname: Router.RelativePathString, params?: Router.UnknownInputParams } | { pathname: Router.ExternalPathString, params?: Router.UnknownInputParams } | { pathname: `/api_fetch`; params?: Router.UnknownInputParams; } | { pathname: `/dayly`; params?: Router.UnknownInputParams; } | { pathname: `/`; params?: Router.UnknownInputParams; } | { pathname: `/monthly`; params?: Router.UnknownInputParams; } | { pathname: `/profile`; params?: Router.UnknownInputParams; } | { pathname: `/statistic`; params?: Router.UnknownInputParams; } | { pathname: `/style`; params?: Router.UnknownInputParams; } | { pathname: `/weekly`; params?: Router.UnknownInputParams; } | { pathname: `/_sitemap`; params?: Router.UnknownInputParams; };
+    }
+  }
+}
