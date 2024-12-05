@@ -24,44 +24,24 @@ export default function TabTwoScreen() {
   const handleFetchData = async(direction : string, dataType: string, frequence='yearly') =>{
     try {
       if (direction==="current"){
-          //const current_data = await fetchData(0, dataType,frequence);
-          console.log("aaaaaaaaa")
-
-          //console.log(current_data)
-          console.log("avvvvvvv")
-          setChartData((prevData) => ({
-            ...prevData,
-            ["num_visits"]: {
-              data_page : 0,
-              labels: ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
-              datasets: [{ data: [15,2,3,4,5,6,7,8,9,10,11,12] }],
-            },
-          }));
+          const current_data = await fetchData(dataType,frequence, today.getFullYear()-0);
           
           setChartData((prevData) => ({
             ...prevData,
-            ["pause_time"]: {
+            [dataType]: {
               data_page : 0,
               labels: ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
-              datasets: [{ data: [15,2,3,4,5,6,7,8,9,10,11,12] }],
+              datasets: [{ data: current_data.data }],
             },
           }));
-
-          setChartData((prevData) => ({
-            ...prevData,
-            ["session_time"]: {
-              data_page : 0,
-              labels: ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
-              datasets: [{ data: [10,2,3,4,5,6,7,8,9,10,11,12] }],
-            },
-          }));
+          
 
 
       }else{
 
         if ((chartData[dataType].data_page != 0 && direction==="previous") || (chartData[dataType].data_page != (today.getFullYear() -2000) && direction ==="next")){
             var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page+ 1;
-            const newResp = await fetchData(newPage, dataType,frequence); // Fetch data from backend with page and data type
+            const newResp = await fetchData(dataType,frequence, today.getFullYear()-newPage); // Fetch data from backend with page and data type
             
             setChartData((prevData) => ({
               ...prevData,
@@ -88,7 +68,9 @@ export default function TabTwoScreen() {
   };
 
   useEffect(()=> {
-    handleFetchData("current","")
+    handleFetchData("current","num_visits")
+    handleFetchData("current","session_time")
+
   },[])
 
   return (
@@ -110,10 +92,10 @@ export default function TabTwoScreen() {
                 size={10}
                 onPress={() => handleFetchData('previous', 'num_visits')} // Fetch previous dataset for num_visits
               ></FontAwesome.Button>
-              {'                       '}
+              {'                              '}
               <View style={styles.legendContainer}><ThemedText> Année { today.getFullYear() - chartData.num_visits.data_page}</ThemedText></View>
 
-              {'                             '}
+              {'                              '}
               <FontAwesome.Button
                 name="chevron-right"
                 backgroundColor="red"
@@ -159,6 +141,74 @@ export default function TabTwoScreen() {
         </Collapsible>
       </ThemedView>
       
+
+      
+
+      <ThemedView style={styles.titleContainer}>
+        <Collapsible title="Temps de seance en moyenne">
+        <View style={styles.chartContainer}>
+        <ThemedText>
+              <FontAwesome.Button
+                name="chevron-left"
+                backgroundColor="green"
+                size={10}
+                onPress={() => handleFetchData('previous', 'session_time')} 
+              ></FontAwesome.Button>
+              {'                              '}
+              <View style={styles.legendContainer}><ThemedText>  Année { today.getFullYear()- chartData.session_time.data_page}</ThemedText></View>
+
+              {'                              '}
+              <FontAwesome.Button
+                name="chevron-right"
+                backgroundColor="green"
+                size={10}
+                onPress={() => handleFetchData('next', 'session_time')} 
+              ></FontAwesome.Button>
+            </ThemedText>
+              
+            <BarChart
+              data={chartData.session_time}
+              width={Dimensions.get('window').width*0.95}
+              height={300}
+              verticalLabelRotation={90}
+              fromZero
+              chartConfig={{
+                barPercentage: .68,
+                backgroundGradientFrom: '#1E2923',
+                backgroundGradientTo: '#08130D',
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              }}
+            />
+            <View style={styles.overlay}>
+
+              {chartData.session_time?.datasets?.[0]?.data?.length > 0 &&
+                chartData.session_time.labels?.length > 0 &&
+              chartData.session_time.datasets[0].data.map((value, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.barArea,
+                    {
+                      height:200,
+                      top:50,
+                      left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.session_time.labels.length + 70,
+                      width: Dimensions.get('window').width*0.95  / chartData.session_time.labels.length ,
+                    },
+                  ]}
+                  onPress={() => handleBarPress(chartData.session_time.labels[index], index,"session_time", today.getFullYear() - chartData.pause_time.data_page)}
+                />
+              ))}
+            </View>
+          </View>
+        </Collapsible>
+      </ThemedView>
+
+
+    </ParallaxScrollView>
+  );
+}
+/*
       <ThemedView style={styles.titleContainer}>
         <Collapsible title="Temps de pause moyen par seance">
         <View style={styles.chartContainer}>
@@ -217,74 +267,6 @@ export default function TabTwoScreen() {
             </View>
           </View>
         </Collapsible>
-      </ThemedView>
-
-      
-
-      <ThemedView style={styles.titleContainer}>
-        <Collapsible title="Temps de seance en moyenne">
-        <View style={styles.chartContainer}>
-        <ThemedText>
-              <FontAwesome.Button
-                name="chevron-left"
-                backgroundColor="green"
-                size={10}
-                onPress={() => handleFetchData('previous', 'session_time')} 
-              ></FontAwesome.Button>
-              {'                       '}
-              <View style={styles.legendContainer}><ThemedText>  Année { today.getFullYear()- chartData.session_time.data_page}</ThemedText></View>
-
-              {'                       '}
-              <FontAwesome.Button
-                name="chevron-right"
-                backgroundColor="green"
-                size={10}
-                onPress={() => handleFetchData('next', 'session_time')} 
-              ></FontAwesome.Button>
-            </ThemedText>
-              
-            <BarChart
-              data={chartData.session_time}
-              width={Dimensions.get('window').width*0.95}
-              height={300}
-              verticalLabelRotation={90}
-              fromZero
-              chartConfig={{
-                barPercentage: .68,
-                backgroundGradientFrom: '#1E2923',
-                backgroundGradientTo: '#08130D',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              }}
-            />
-            <View style={styles.overlay}>
-
-              {chartData.session_time?.datasets?.[0]?.data?.length > 0 &&
-                chartData.session_time.labels?.length > 0 &&
-              chartData.session_time.datasets[0].data.map((value, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.barArea,
-                    {
-                      height:200,
-                      top:50,
-                      left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.session_time.labels.length + 70,
-                      width: Dimensions.get('window').width*0.95  / chartData.session_time.labels.length ,
-                    },
-                  ]}
-                  onPress={() => handleBarPress(chartData.session_time.labels[index], index,"session_time", today.getFullYear() - chartData.pause_time.data_page)}
-                />
-              ))}
-            </View>
-          </View>
-        </Collapsible>
-      </ThemedView>
-
-
-    </ParallaxScrollView>
-  );
-}
-
+      </ThemedView> */
 
 const styles = customStyle;

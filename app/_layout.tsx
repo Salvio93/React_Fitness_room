@@ -57,10 +57,17 @@ export default function TabLayout() {
         options={{ href: null, }}
       />
       <Tabs.Screen
-      name="dayly"
+      name="dayly_visits"
       options={{ href: null, }}
     />
-
+     <Tabs.Screen
+      name="dayly_session"
+      options={{ href: null, }}
+    />
+    <Tabs.Screen
+      name="session_detail"
+      options={{ href: null, }}
+    />
 
     </Tabs>
   );
