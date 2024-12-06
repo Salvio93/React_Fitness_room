@@ -24,45 +24,33 @@ export default function DailyScreen() {
     session_time: {  data_page:0, datasets: { data: [] } },
   });
   const [text, setText] = useState(`${dayList[index]} of ${week} - ${month} - ${year}`); //to update text 
-  const [datatext, setdataText] = useState(`random data`); 
+  const [datatext, setdataText] = useState(`init data`); 
 
 
-  const handleFetchData = async(direction : string, dataType: string, frequence='dayly') =>{
+  const handleFetchData = async(direction : string, dataType: string, frequence='daily') =>{
 
 
     try {
       if (direction==="current"){
-          const current_data = await fetchData(dataType,frequence,year,month,week,index); 
+          const JSON = await fetchData(dataType,frequence,year,month,week,index); 
           
-
-          setChartData((prevData) => ({ 
-            ...prevData,
-            [dataType]: {
-              data_page : index,
-              datasets: { data: current_data.data },//fetch
-            },
-          }));
+          //treat data
 
           setText(`${dayList[index]} - ${week}- ${month} - ${year}`);
-          setdataText(`current data`);
+          setdataText(`${JSON.exo_time_day.session.length} - ${JSON.exo_time_day.day}`);
 
 
       }else{
 
         if ((chartData[dataType].data_page != 0 && direction==="previous") || (chartData[dataType].data_page != 6 && direction ==="next")){
           var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page -0 +1; //to declare as int
-            const newResp = await fetchData(dataType,frequence,year,month,week,newPage); 
+            const JSON = await fetchData(dataType,frequence,year,month,week,newPage); 
             
-            setChartData((prevData) => ({
-              ...prevData,
-              [dataType]: {
-                data_page : newPage,
-                datasets: { data: newResp.data },
-              },
-            }));
+            
+            //treat data
             
             setText(`${dayList[newPage]} of ${week} - ${month} - ${year}`);
-            setdataText(`notcurrent data`);
+            setdataText(`${JSON.exo_time_day.session.length} - ${JSON.exo_time_day.day}`);
 
         }
       }
@@ -73,10 +61,10 @@ export default function DailyScreen() {
   };
   
 
-  const handleBarPress = (session_num, year,month,day) => {
+  const handleBarPress = (session_num,JSON, year,month,day) => {
     router.push({
       pathname: '/session_detail',
-      params: {session_num, year,month,day },
+      params: {session_num,JSON, year,month,day },
     });
   };
 
@@ -96,7 +84,7 @@ export default function DailyScreen() {
     
   
 
-  //chartData[dataType].datasets.data.session_count
+  //JSON.exo_time_day.session.length
   const session_j = 3;
   // for each session, data of session
 
@@ -135,7 +123,7 @@ export default function DailyScreen() {
                 {Array.from({ length: session_j }).map((_, index) => (
                   <View key={`button-${index}`}>
                     <ThemedText>Detail session {index + 1}</ThemedText>
-                    {/*debut session: {chartData.session_time.datasets[index+1].begin}  fin dession: {chartData.session_time.datasets[index+1].end} */}  
+                    {/*debut session: {JSON.exo_time_day.session_duration}  fin dession: {chartData.session_time.datasets[index+1].end} */}  
                     <FontAwesome.Button
                       name="forward"
                       backgroundColor="red"

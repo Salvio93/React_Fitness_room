@@ -22,14 +22,14 @@ export default function DailyScreen() {
   const [datatext, setdataText] = useState(`random data`); 
 
 
-  const handleFetchData = async(dataType: string, frequence='dayly') =>{
+  const handleFetchData = async(dataType: string, frequence='daily') =>{
 
 
     try {
         const current_data = await fetchData(dataType,frequence,year,month,week,index); 
         //treat data
 
-        setdataText(`${current_data.data}`);
+        setdataText(`${current_data.exo_time_day.day_avg}`);
 
     } catch (error) {
       console.error(`Failed to fetch current data:`, error);

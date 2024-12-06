@@ -15,7 +15,7 @@ import { useLocalSearchParams } from 'expo-router';
 export default function SessionScreen() {
     const dayList =  ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']
 
-    var {session_num,year, month , day } = useLocalSearchParams<{session_num; year;month;day}>();
+    var {session_num,JSON,year, month , day } = useLocalSearchParams<{session_num;JSON; year;month;day}>();
     console.log(session_num + '- '+year +' - '+month+ ' - '+day)
 
     const [text, setText] = useState(`${day} - ${month} - ${year}`); //to update text 
@@ -25,9 +25,9 @@ export default function SessionScreen() {
 
 
     try {
-        const current_data = await fetchData("session_time","session_data",year,month,day); 
-        //treat data for num_session
-        setText(`${dayList[day]} - ${month} - ${year}`);
+
+      //treat data for num_session of JSON
+        setText(`${dayList[day]} - ${month} - ${year} -  ${JSON.exo_time_day.day}`);
 
     } catch (error) {
       console.error(`Failed to fetch current data:`, error);
@@ -53,7 +53,7 @@ export default function SessionScreen() {
     
   
 
-  //chartData[dataType].datasets.data[j].set_count
+  //JSON.exo_time_day.session[j].sets.length
   const session_i = 3;
   //access each set data dynamiclly
 

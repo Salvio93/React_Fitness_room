@@ -70,13 +70,13 @@ export default function WeeklyScreen() {
   };
   const handleBarPressVisits = (label, index, dataType, year,month,week) => {
     router.push({
-      pathname: '/dayly_visits',
+      pathname: '/daily_visits',
       params: { label, index, dataType,year,month,week }, //week[index]=lundi-dimanche
     });
   };
   const handleBarPressSession = (label, index, dataType, year,month,week) => {
     router.push({
-      pathname: '/dayly_session',
+      pathname: '/daily_session',
       params: { label, index, dataType,year,month,week }, //week[index]=lundi-dimanche
     });
   };
