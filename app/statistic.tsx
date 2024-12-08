@@ -17,7 +17,7 @@ export default function TabTwoScreen() {
   const [chartData, setChartData] = useState({
     num_visits: { data_page: 0 ,labels: [], datasets: [{ data: [] }] },
     pause_time: {  data_page:0 ,labels: [], datasets: [{ data: [] }] },
-    session_time: {  data_page:0 ,labels: [], datasets: [{ data: [] }] },
+    exo_time: {  data_page:0 ,labels: [], datasets: [{ data: [] }] },
   });
   
   // Function to handle fetch for previous or next data set for a specific data type
@@ -25,13 +25,25 @@ export default function TabTwoScreen() {
     try {
       if (direction==="current"){
           const current_data = await fetchData(dataType,frequence, today.getFullYear()-0);
-          
+          console.log(current_data)
+
+          var dynamicKey = `${dataType}_year`;
+          if (dataType == "num_visits"){
+            var dynamicKey1 = `monthly_count`;
+
+          }
+          if (dataType == "exo_time"){
+            var dynamicKey1 = `monthly_moy`;
+
+          }
+
+
           setChartData((prevData) => ({
             ...prevData,
             [dataType]: {
               data_page : 0,
               labels: ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
-              datasets: [{ data: current_data.data }],
+              datasets: [{ data: current_data[dynamicKey][dynamicKey1]  }],
             },
           }));
           
@@ -43,12 +55,23 @@ export default function TabTwoScreen() {
             var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page+ 1;
             const newResp = await fetchData(dataType,frequence, today.getFullYear()-newPage); // Fetch data from backend with page and data type
             
+            console.log(newResp)
+            var dynamicKey = `${dataType}_year`;
+            if (dataType == "num_visits"){
+              var dynamicKey1 = `monthly_count`;
+  
+            }
+            if (dataType == "exo_time"){
+              var dynamicKey1 = `monthly_moy`;
+  
+            }
+
             setChartData((prevData) => ({
               ...prevData,
               [dataType]: {
                 data_page : newPage,
                 labels: newResp.labels || prevData[dataType].labels,
-                datasets: [{ data: newResp.data }],
+                datasets: [{ data: newResp[dynamicKey][dynamicKey1] }],
               },
             }));
         }
@@ -69,7 +92,7 @@ export default function TabTwoScreen() {
 
   useEffect(()=> {
     handleFetchData("current","num_visits")
-    handleFetchData("current","session_time")
+    handleFetchData("current","exo_time")
 
   },[])
 
@@ -152,22 +175,22 @@ export default function TabTwoScreen() {
                 name="chevron-left"
                 backgroundColor="green"
                 size={10}
-                onPress={() => handleFetchData('previous', 'session_time')} 
+                onPress={() => handleFetchData('previous', 'exo_time')} 
               ></FontAwesome.Button>
               {'                              '}
-              <View style={styles.legendContainer}><ThemedText>  Année { today.getFullYear()- chartData.session_time.data_page}</ThemedText></View>
+              <View style={styles.legendContainer}><ThemedText>  Année { today.getFullYear()- chartData.exo_time.data_page}</ThemedText></View>
 
               {'                              '}
               <FontAwesome.Button
                 name="chevron-right"
                 backgroundColor="green"
                 size={10}
-                onPress={() => handleFetchData('next', 'session_time')} 
+                onPress={() => handleFetchData('next', 'exo_time')} 
               ></FontAwesome.Button>
             </ThemedText>
               
             <BarChart
-              data={chartData.session_time}
+              data={chartData.exo_time}
               width={Dimensions.get('window').width*0.95}
               height={300}
               verticalLabelRotation={90}
@@ -182,9 +205,9 @@ export default function TabTwoScreen() {
             />
             <View style={styles.overlay}>
 
-              {chartData.session_time?.datasets?.[0]?.data?.length > 0 &&
-                chartData.session_time.labels?.length > 0 &&
-              chartData.session_time.datasets[0].data.map((value, index) => (
+              {chartData.exo_time?.datasets?.[0]?.data?.length > 0 &&
+                chartData.exo_time.labels?.length > 0 &&
+              chartData.exo_time.datasets[0].data.map((value, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
@@ -192,11 +215,11 @@ export default function TabTwoScreen() {
                     {
                       height:200,
                       top:50,
-                      left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.session_time.labels.length + 70,
-                      width: Dimensions.get('window').width*0.95  / chartData.session_time.labels.length ,
+                      left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.exo_time.labels.length + 70,
+                      width: Dimensions.get('window').width*0.95  / chartData.exo_time.labels.length ,
                     },
                   ]}
-                  onPress={() => handleBarPress(chartData.session_time.labels[index], index,"session_time", today.getFullYear() - chartData.pause_time.data_page)}
+                  onPress={() => handleBarPress(chartData.exo_time.labels[index], index,"exo_time", today.getFullYear() - chartData.pause_time.data_page)}
                 />
               ))}
             </View>

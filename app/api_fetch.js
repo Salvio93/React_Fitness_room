@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchData = async (dataType, frequence,year=null,month=null,week=null,day=null) => {
+export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0) => {
   const monthList = ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
   const weekList = ['Week 1','Week 2','Week 3','Week 4','Week 5']
   const dayList =  ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']
@@ -24,20 +24,20 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
       if (frequence=="yearly"){
         var date = year+"-"+month+"-"+day+"T00:00:00"
         const response ={
-          "num_visits_year" : {
-            "year" : year,
-            "year_count" : 250,
-            "monthly_count" : [year-2020,20,21,22,23,2,24,2,25,2,26,20]
+          num_visits_year : {
+            year : year,
+            year_count : 250,
+            monthly_count : [year-2020,20,21,22,23,2,24,2,25,2,26,20]
           }
         }
-         /*await axios.get('http://192.168.1.31:9090/api/num_visits', { //10.0.2.2 for android
+         /*await axios.get('http://192.168.1.31:9090/api/number_of_sessions', { //10.0.2.2 for android
           params: { frequence,0, date},
         });*/
         return response; 
 
       }
       if (frequence=="monthly"){
-        var search_month = month+1;
+        var search_month = month-1 + 2;
         var date = year+"-"+search_month+"-"+day+"T00:00:00"
 
         const response = {
@@ -48,7 +48,7 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
             weekly_count : [search_month,4,2,2,4]
         
           }
-        } /*await axios.get('http://192.168.1.31:9090/api/num_visits', { //10.0.2.2 for android
+        } /*await axios.get('http://192.168.1.31:9090/api/number_of_sessions', { //10.0.2.2 for android
           params: { frequence,0, date },
         });*/
         return response; 
@@ -69,62 +69,63 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
         
           }
         }
-         /* await axios.get('http://192.168.1.31:9090/api/num_visits', { //10.0.2.2 for android
+         /* await axios.get('http://192.168.1.31:9090/api/number_of_sessions', { //10.0.2.2 for android
           params: {  frequence, 0 , date },
         });*/
         return response; 
 
       }
       if (frequence=="daily"){
+        console.log("-------------------------------------------")
         var search_month = monthList.indexOf(month) + 1;
-        var search_day = 1+day + 7*(weekList.indexOf(week));
+        var search_day =  day-1+2 + (7*(weekList.indexOf(week)));
         var date = year+"-"+search_month+"-"+search_day+"T00:00:00"
 
         const response = {
-          "exo_time_day": {
-            "year": 2024,
-            "month": 12,
-            "day": 8,
-            "day_avg": "15min+20min / 2 sessions",
-            "sessions": [
+          exo_time_day: {
+            year: year,
+            month: search_month,
+            day: search_day,
+            day_avg: "15min+20min / 2 sessions",
+            sessions: [
               {
-                "session_duration": "session.endDate - session.beginDate",
-                "env_data": {
-                  "temperature": "x",
-                  "humidity": "y",
-                  "particulate": "z"
+                session_duration: "session.endDate - session.beginDate",
+                env_data: {
+                  temperature: 20,
+                  humidity: 10,
+                  particulate: 15
                 },
-                "sets": [
+                sets: [
                   {
-                    "weight": "b",
-                    "rep": "c",
-                    "set_time": "set.endDate - set.beginDate",
-                    "distance": [search_month,search_day,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,5],
-                    "times": ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
+                    weight: 20,
+                    rep: 12,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,3,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,5],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
                   },
                   {
-                    "weight": "b",
-                    "rep": "c",
-                    "set_time": "set.endDate - set.beginDate",
-                    "distance": [search_month,search_day,8,8,8,7,6,4,2,0,0,0,0,0,3,8],
-                    "times": ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
+                    weight: 25,
+                    rep: 10,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,2,8,8,8,7,6,4,2,0,0,0,0,0,3,8],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
                   }
                 ]
               },
               {
-                "session_duration": "session.endDate - session.beginDate",
-                "env_data": {
-                  "temperature": "x",
-                  "humidity": "y",
-                  "particulate": "z"
+                session_duration: "session.endDate - session.beginDate",
+                env_data: {
+                  temperature: 21,
+                  humidity: 11,
+                  particulate: 16
                 },
-                "sets": [
+                sets: [
                   {
-                    "weight": "b",
-                    "rep": "c",
-                    "set_time": "set.endDate - set.beginDate",
-                    "distance": [search_month,search_day,2,3,4,5,4,2,2,0,0,0,0,0,2,2],
-                    "times": ['1','2','3','4','5','6','7','8','9','10','11','12']
+                    weight: 10,
+                    rep: 20,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,2,2,3,4,5,4,2,2,0,0,0,0,0,2,2],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12']
                   }
                 ]
               }
@@ -134,7 +135,7 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
         
         
         
-        /*await axios.get('http://192.168.1.31:9090/api/num_visits', { //10.0.2.2 for android
+        /*await axios.get('http://192.168.1.31:9090/api/session_data', { //10.0.2.2 for android
           params: {  frequence ,0, date},
         });*/
         return response; 
@@ -143,25 +144,25 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
     }
 
     
-    if (dataType=="session_time"){
+    if (dataType=="exo_time"){
       if (frequence=="yearly"){
         var date = year+"-"+month+"-"+day+"T00:00:00"
 
         const response = {
-          "exo_time_year" : {
-            "year" : 2024,
-            "year_moy" : "14:23",
-            "monthly_moy" : [11,12,13,14,15,16,17,18,19,20,21,12] //moyenne = end-begin de chaque set
+          exo_time_year : {
+            year : 2024,
+            year_moy : "14:23",
+            monthly_moy : [year-2020,12,13,14,15,16,17,18,19,20,21,12] //moyenne = end-begin de chaque set
           }
         }
-         /*await axios.get('http://192.168.1.31:9090/api/session_time', { //10.0.2.2 for android
+         /*await axios.get('http://192.168.1.31:9090/api/mean_exercise_time', { //10.0.2.2 for android
           params: {  frequence, 0,date},
         });*/
         return response; 
 
       }
       if (frequence=="monthly"){
-        var search_month = month+1;
+        var search_month = month-1 +2;
         var date = year+"-"+search_month+"-"+day+"T00:00:00"
         const response = {
           exo_time_month : {
@@ -172,7 +173,7 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
         
           }
         }
-         /* await axios.get('http://192.168.1.31:9090/api/session_time', { //10.0.2.2 for android
+         /* await axios.get('http://192.168.1.31:9090/api/mean_exercise_time', { //10.0.2.2 for android
           params: { frequence, 0 , date },
         });*/
         return response; 
@@ -184,16 +185,16 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
         var date = year+"-"+search_month+"-"+search_week+"T00:00:00"
 
         const response = {
-          "exo_time_week" : {
-            "year" : 2024,
-            "month" : 12,
-            "week" : 1,
-            "week_moy" : "6:30",
-            "daily_moy" : [search_month,search_week,8,7,6,5,7]
+          exo_time_week : {
+            year : 2024,
+            month : 12,
+            week : 1,
+            week_moy : "6:30",
+            daily_moy : [search_month,search_week,8,7,6,5,7]
         
           }
         }
-        /* await axios.get('http://192.168.1.31:9090/api/session_time', { //10.0.2.2 for android
+        /* await axios.get('http://192.168.1.31:9090/api/mean_exercise_time', { //10.0.2.2 for android
           params: { frequence,0,date },
         });*/
         return response; 
@@ -201,62 +202,62 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
       }
       if (frequence=="daily"){
         var search_month = monthList.indexOf(month) + 1;
-        var search_day = 1+ day + 7*(weekList.indexOf(week));
+        var search_day =  day-1+2 + (7*(weekList.indexOf(week)));
         var date = year+"-"+search_month+"-"+search_day+"T00:00:00"
 
         const response = {
-          "exo_time_day": {
-            "year": 2024,
-            "month": 12,
-            "day": 8,
-            "day_avg": "15min+20min / 2 sessions",
-            "sessions": [
+          exo_time_day: {
+            year: year,
+            month: search_month,
+            day: search_day,
+            day_avg: "15min+20min / 2 sessions",
+            sessions: [
               {
-                "session_duration": "session.endDate - session.beginDate",
-                "env_data": {
-                  "temperature": "x",
-                  "humidity": "y",
-                  "particulate": "z"
+                session_duration: "session.endDate - session.beginDate",
+                env_data: {
+                  temperature: 20,
+                  humidity: 10,
+                  particulate: 15
                 },
-                "sets": [
+                sets: [
                   {
-                    "weight": "b",
-                    "rep": "c",
-                    "set_time": "set.endDate - set.beginDate",
-                    "distance": [search_month,search_day,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,5],
-                    "times": ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
+                    weight: 20,
+                    rep: 12,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,2,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,5],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
                   },
                   {
-                    "weight": "b",
-                    "rep": "c",
-                    "set_time": "set.endDate - set.beginDate",
-                    "distance": [search_month,search_day,8,8,8,7,6,4,2,0,0,0,0,0,3,8],
-                    "times": ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
+                    weight: 25,
+                    rep: 10,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,2,8,8,8,7,6,4,2,0,0,0,0,0,3,8],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
                   }
                 ]
               },
               {
-                "session_duration": "session.endDate - session.beginDate",
-                "env_data": {
-                  "temperature": "x",
-                  "humidity": "y",
-                  "particulate": "z"
+                session_duration: "session.endDate - session.beginDate",
+                env_data: {
+                  temperature: 21,
+                  humidity: 11,
+                  particulate: 16
                 },
-                "sets": [
+                sets: [
                   {
-                    "weight": "b",
-                    "rep": "c",
-                    "set_time": "set.endDate - set.beginDate",
-                    "distance": [search_month,search_day,2,3,4,5,4,2,2,0,0,0,0,0,2,2],
-                    "times": ['1','2','3','4','5','6','7','8','9','10','11','12']
+                    weight: 10,
+                    rep: 20,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,search_day,2,3,4,5,4,2,2,0,0,0,0,0,2,2],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12']
                   }
                 ]
               }
             ]
           }
         }  
-        /*await axios.get('http://192.168.1.31:9090/api/session_time', { //10.0.2.2 for android
-          params: { frequence , 0, date},
+        /*await axios.get('http://192.168.1.31:9090/api/session_data/detailed', { //10.0.2.2 for android
+          params: { 0, date},
         });*/
         return response; 
 
@@ -264,7 +265,6 @@ export const fetchData = async (dataType, frequence,year=null,month=null,week=nu
         
     }
     
-    console.log(response.data)
     
     return response; 
   } catch (error) {

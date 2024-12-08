@@ -20,7 +20,7 @@ export default function WeeklyScreen() {
   const weekList = ['Week 1','Week 2','Week 3','Week 4','Week 5']
   const [chartData, setChartData] = useState({
     num_visits: {  data_page:0 ,labels: [], datasets: [{ data: [] }] },
-    session_time: {  data_page:0 ,labels: [], datasets: [{ data: [] }] },
+    exo_time: {  data_page:0 ,labels: [], datasets: [{ data: [] }] },
   });
   const [text, setText] = useState(`${weekList[index]} of ${month} - ${year}`); //to update text 
 
@@ -31,14 +31,25 @@ export default function WeeklyScreen() {
     try {
       if (direction==="current"){
           const current_data = await fetchData(dataType, frequence, year,month,index); 
-          
+          console.log(current_data)
+
+          var dynamicKey = `${dataType}_week`;
+          if (dataType == "num_visits"){
+            var dynamicKey1 = `daily_count`;
+
+          }
+          if (dataType == "exo_time"){
+            var dynamicKey1 = `daily_moy`;
+
+          }
+
 
           setChartData((prevData) => ({ 
             ...prevData,
             [dataType]: {
               data_page : index,
               labels: ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
-              datasets: [{ data: current_data.data }],//fetch
+              datasets: [{ data: current_data[dynamicKey][dynamicKey1]}],//fetch
             },
           }));
           setText(`${weekList[index]} - ${month} - ${year}`);
@@ -49,13 +60,23 @@ export default function WeeklyScreen() {
         if ((chartData[dataType].data_page != 0 && direction==="previous") || (chartData[dataType].data_page != 4 && direction ==="next")){
           var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page -0 +1; //to declare as int
             const newResp = await fetchData(dataType,frequence, year,month,newPage); 
+            console.log(newResp)
 
+            var dynamicKey = `${dataType}_week`;
+            if (dataType == "num_visits"){
+              var dynamicKey1 = `daily_count`;
+  
+            }
+            if (dataType == "exo_time"){
+              var dynamicKey1 = `daily_moy`;
+  
+            }
             setChartData((prevData) => ({
               ...prevData,
               [dataType]: {
                 data_page : newPage,
                 labels: newResp.labels || prevData[dataType].labels,
-                datasets: [{ data: newResp.data }],
+                datasets: [{ data: newResp[dynamicKey][dynamicKey1] }],
               },
             }));
             
@@ -68,13 +89,8 @@ export default function WeeklyScreen() {
     }
     
   };
-  const handleBarPressVisits = (label, index, dataType, year,month,week) => {
-    router.push({
-      pathname: '/daily_visits',
-      params: { label, index, dataType,year,month,week }, //week[index]=lundi-dimanche
-    });
-  };
-  const handleBarPressSession = (label, index, dataType, year,month,week) => {
+
+  const handleBarPress = (label, index, dataType, year,month,week) => {
     router.push({
       pathname: '/daily_session',
       params: { label, index, dataType,year,month,week }, //week[index]=lundi-dimanche
@@ -156,7 +172,7 @@ export default function WeeklyScreen() {
                       width: Dimensions.get('window').width*0.95  / chartData.num_visits.labels.length ,
                     },
                   ]}
-                  onPress={() => handleBarPressVisits(chartData.num_visits.labels[index], index,"num_visits",year,month,weekList[chartData.num_visits.data_page])}
+                  onPress={() => handleBarPress(chartData.num_visits.labels[index], index,"num_visits",year,month,weekList[chartData.num_visits.data_page])}
                 />
               ))}
             </View>
@@ -166,7 +182,7 @@ export default function WeeklyScreen() {
       
       
 
-    <ThemedView style={[styles.titleContainer,{display: dataType=="session_time" ? 'flex' : 'none'}]}>
+    <ThemedView style={[styles.titleContainer,{display: dataType=="exo_time" ? 'flex' : 'none'}]}>
             <ThemedText>Temps de seance en moyenne</ThemedText> 
 
             <View style={[styles.chartContainer, {left:-230, bottom:-50}]}>
@@ -175,7 +191,7 @@ export default function WeeklyScreen() {
                     name="chevron-left"
                     backgroundColor="green"
                     size={10}
-                    onPress={() => handleFetchData('previous', 'session_time')} 
+                    onPress={() => handleFetchData('previous', 'exo_time')} 
                   ></FontAwesome.Button>
                   {'                                       '}
 
@@ -184,12 +200,12 @@ export default function WeeklyScreen() {
                     name="chevron-right"
                     backgroundColor="green"
                     size={10}
-                    onPress={() => handleFetchData('next', 'session_time')} 
+                    onPress={() => handleFetchData('next', 'exo_time')} 
                   ></FontAwesome.Button>
                 </ThemedText>
                   
                 <BarChart
-                  data={chartData.session_time}
+                  data={chartData.exo_time}
                   width={Dimensions.get('window').width*0.95}
                   height={300}
                   fromZero
@@ -203,9 +219,9 @@ export default function WeeklyScreen() {
                 />
                 <View style={styles.overlay}>
 
-                  {chartData.session_time?.datasets?.[0]?.data?.length > 0 &&
-                    chartData.session_time.labels?.length > 0 &&
-                  chartData.session_time.datasets[0].data.map((value, index) => (
+                  {chartData.exo_time?.datasets?.[0]?.data?.length > 0 &&
+                    chartData.exo_time.labels?.length > 0 &&
+                  chartData.exo_time.datasets[0].data.map((value, index) => (
                     <TouchableOpacity
                       key={index}
                       style={[
@@ -213,11 +229,11 @@ export default function WeeklyScreen() {
                         {
                           height:200,
                           top:50,
-                          left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.session_time.labels.length + 70,
-                          width: Dimensions.get('window').width*0.95  / chartData.session_time.labels.length ,
+                          left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.exo_time.labels.length + 70,
+                          width: Dimensions.get('window').width*0.95  / chartData.exo_time.labels.length ,
                         },
                       ]}
-                      onPress={() => handleBarPressSession(chartData.session_time.labels[index], index,"session_time",year,month, weekList[chartData.session_time.data_page])}
+                      onPress={() => handleBarPress(chartData.exo_time.labels[index], index,"exo_time",year,month, weekList[chartData.exo_time.data_page])}
                     />
                   ))}
                 </View>

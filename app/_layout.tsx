@@ -56,10 +56,6 @@ export default function TabLayout() {
         name="weekly"
         options={{ href: null, }}
       />
-      <Tabs.Screen
-      name="daily_visits"
-      options={{ href: null, }}
-    />
      <Tabs.Screen
       name="daily_session"
       options={{ href: null, }}
