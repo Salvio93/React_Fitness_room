@@ -4,14 +4,15 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
   const monthList = ['Janvier', 'Fevier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
   const weekList = ['Week 1','Week 2','Week 3','Week 4','Week 5']
   const dayList =  ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']
+  
   try {
     console.log(dataType,frequence,year,month,week,day)
     if (dataType == "air_quality"){
       const response = {
-        "env_data": {
-          "temperature": 22,
-          "humidity": 80,
-          "particulate": 50
+        env_data: {
+          temperature: 22,
+          humidity: 80,
+          particulate: 50
         }
       }
          /*await axios.get('http://192.168.1.31:9090/api/air_quality', { //10.0.2.2 for android
@@ -262,6 +263,64 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
         return response; 
 
       }    
+      if (frequence=="last"){
+        const response = {
+          exo_time_day: {
+            year: year,
+            month: search_month,
+            day: search_day,
+            day_avg: "15min+20min / 2 sessions",
+            sessions: [
+              {
+                session_duration: "session.endDate - session.beginDate",
+                env_data: {
+                  temperature: 20,
+                  humidity: 10,
+                  particulate: 15
+                },
+                sets: [
+                  {
+                    weight: 20,
+                    rep: 12,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,2,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,5],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
+                  },
+                  {
+                    weight: 25,
+                    rep: 10,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,2,8,8,8,7,6,4,2,0,0,0,0,0,3,8],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
+                  }
+                ]
+              },
+              {
+                session_duration: "session.endDate - session.beginDate",
+                env_data: {
+                  temperature: 21,
+                  humidity: 11,
+                  particulate: 16
+                },
+                sets: [
+                  {
+                    weight: 10,
+                    rep: 20,
+                    set_time: "set.endDate - set.beginDate",
+                    distance: [0,search_day,2,3,4,5,4,2,2,0,0,0,0,0,2,2],
+                    times: ['1','2','3','4','5','6','7','8','9','10','11','12']
+                  }
+                ]
+              }
+            ]
+          }
+        }  
+        /*await axios.get('http://192.168.1.31:9090/api/session_data/last', { //10.0.2.2 for android
+          params: {},
+        });*/
+        return response; 
+
+      }  
         
     }
     

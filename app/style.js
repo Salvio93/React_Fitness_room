@@ -41,5 +41,9 @@ export const customStyle = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
+    stepContainer: {
+      gap: 8,
+      marginBottom: 8,
+    },
   });
 

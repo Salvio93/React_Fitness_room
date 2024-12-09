@@ -29,14 +29,11 @@ export default function DailyScreen() {
 
 
   const handleFetchData = async(direction : string, dataType: string, frequence='daily') =>{
-
-
     try {
       if (direction==="current"){
           var current_data = await fetchData(dataType,frequence,year,month,week,index); 
           console.log(current_data)
 
-          //treat data
           setChartData((prevData) => ({ 
             ...prevData,
             [dataType]: {
@@ -46,17 +43,15 @@ export default function DailyScreen() {
             },
           }));
           setText(`${dayList[index]} - ${week}- ${month} - ${year}`);
-          setdataText(`${current_data.exo_time_day.sessions.length} - ${current_data.exo_time_day.day}`);
+          setdataText(`${current_data.exo_time_day?.sessions?.length ?? "0"} - ${current_data.exo_time_day?.day ?? "0"}`);
 
 
       }else{
 
         if ((chartData[dataType].data_page != 0 && direction==="previous") || (chartData[dataType].data_page != 6 && direction ==="next")){
-          var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page -0 +1; //to declare as int
+          var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page -0 +1; 
           var newResp = await fetchData(dataType,frequence,year,month,week,newPage); 
 
-            
-            //treat data
 
             setChartData((prevData) => ({ 
               ...prevData,
@@ -68,7 +63,7 @@ export default function DailyScreen() {
               },
             }));
             setText(`${dayList[newPage]} of ${week} - ${month} - ${year}`);
-            setdataText(`${chartData.exo_time.Json_data.exo_time_day.sessions.length} - ${newResp.exo_time_day.day}`);
+            setdataText(`${chartData.exo_time.Json_data.exo_time_day?.sessions?.length ?? "0"} - ${newResp.exo_time_day?.day ?? "0"}`);
         }
       }
     } catch (error) {
@@ -95,22 +90,17 @@ export default function DailyScreen() {
     ...updatedStyles.titleContainer,
     display: "flex",
     };
-    styles = updatedStyles; // Reassign the updated styles
+    styles = updatedStyles; 
 
   },[index])
     
-
-  //Json_data.exo_time_day.session.length
-  // for each session, data of session
   return (
 
     
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={<Ionicons size={310} name="person" style={styles.headerImage} />}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title"> {text}</ThemedText>
-      </ThemedView>
+        
 
       
       <ThemedView style={[styles.titleContainer,{display: dataType=="exo_time" ? 'flex' : 'none'}]}>
@@ -157,33 +147,58 @@ export default function DailyScreen() {
       
       <ThemedView style={[styles.titleContainer,{display: dataType=="num_visits" ? 'flex' : 'none'}]}>
         <ThemedText>Information de seance à la date du {text} </ThemedText> 
-        <View style={[styles.chartContainer, {left:-350, bottom:-50}]}>
+
+
+        <View style={[styles.stepContainer, {left:-350, bottom:-50}]}>
+          <ThemedText>
+                    <FontAwesome.Button
+                      name="chevron-left"
+                      backgroundColor="green"
+                      size={10}
+                      onPress={() => handleFetchData('previous', 'num_visits')} 
+                    ></FontAwesome.Button>
+                    {'                                       '}
+
+                    {'                                       '}
+                    <FontAwesome.Button
+                      name="chevron-right"
+                      backgroundColor="green"
+                      size={10}
+                      onPress={() => handleFetchData('next', 'num_visits')} 
+                    ></FontAwesome.Button>
+              </ThemedText>
+
             <ThemedText>
               Nombre de seance :   {chartData.num_visits.Json_data.exo_time_day?.sessions?.length ?? "0"} {"\n"} 
             </ThemedText>
 
             <View>
                 {Array.from({ length: chartData.num_visits.Json_data.exo_time_day?.sessions?.length ?? "0"}).map((_, indexj) => (
-                  <View key={`button-${indexj}`}>
-                    <ThemedText>  
-                      Nombre de serie pour la seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0"}
-                      temps de la seance {indexj+1}:{chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.session_duration ?? "0"}
-
+                  <View style={styles.stepContainer} key={`button-${indexj}`}>
+                    <ThemedText>  {"\n"}
+                      Nombre de serie pour la seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0"} {"\n"}
+                      temps de la seance {indexj+1}:{chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.session_duration ?? "0"}{"\n"}
                     </ThemedText>
+
                     {Array.from({ length: chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0" }).map((_, indexi) => (
                       <View key={`button-${indexi}`}>
-                        <ThemedText>
+                        <ThemedView style={[styles.stepContainer,{display: indexi == 0 ? 'flex' : 'none'}]}>
+                          <ThemedText>
                           Detail seance {indexj + 1}
                           <FontAwesome.Button
                             name="forward"
                             backgroundColor="red"
-                            size={10}
+                            size={8}
                             onPress={() => handleBarPress(indexj + 1,chartData.num_visits.Json_data, year, month, chartData.num_visits.data_page)}
-                          >
+                          >Detail seance {indexj + 1}
                           </FontAwesome.Button>
-                          Nombre de poids et de rep pour serie {indexi+1} de seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.weight ?? "0"} - {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.rep ?? "0"} 
-                          temps de serie {indexi+1}: {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.set_time ?? "0"}
                         </ThemedText>
+                        </ThemedView>
+                        
+                        <ThemedText>Nombre de poids et de rep pour serie {indexi+1} de seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.weight ?? "0"} - {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.rep ?? "0"} {"\n"}
+                          temps de serie {indexi+1}: {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.set_time ?? "0"}{"\n"}
+                        </ThemedText>
+                          
                         
                       </View>
                     ))}
@@ -201,82 +216,3 @@ export default function DailyScreen() {
 }
 
 var styles = customStyle;
-
-      /*<LineChart
-                    data={chartData.exo_time} 
-                    segments={3}
-                    width={Dimensions.get('window').width*0.95}
-                    height={300}
-                    yAxisSuffix={' session'}
-                    fromZero
-                    chartConfig={{
-                        decimalPlaces: 0,
-                        backgroundGradientFrom: 'darkblue',
-                        backgroundGradientTo: 'blue',
-                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    }}
-                    bezier
-                />
-              </View>
-              <View style={styles.overlay}>
-
-                  {chartData.exo_time?.datasets?.[0]?.data?.length > 0 &&
-                    chartData.exo_time.labels?.length > 0 &&
-                  chartData.exo_time.datasets[0].data.map((value, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={[
-                        styles.barArea,
-                        {
-                          height:200,
-                          top:10,
-                          left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.exo_time.labels.length + 70,
-                          width: Dimensions.get('window').width*0.95  / chartData.exo_time.labels.length ,
-                        },
-                      ]}
-                      onPress={() => handleBarPress(year,month, dayList[chartData.exo_time.data_page])}
-                    />
-                  ))}
-                </View>
-          </ThemedView> */
-    /*<ThemedView style={[styles.titleContainer,{display: dataType=="pause_time" ? 'flex' : 'none'}]}>
-        <ThemedText>Temps de pause moyen par seance</ThemedText> 
-        <View style={[styles.chartContainer, {left:-290, bottom:-50}]}>
-        <ThemedText>
-              <FontAwesome.Button
-                name="chevron-left"
-                backgroundColor="green"
-                size={10}
-                onPress={() => handleFetchData('previous', 'pause_time')} 
-              ></FontAwesome.Button>
-              {'               '}
-              <View style={styles.legendContainer}><ThemedText> {text} </ThemedText></View>
-
-              {'                  '}
-              <FontAwesome.Button
-                name="chevron-right"
-                backgroundColor="green"
-                size={10}
-                onPress={() => handleFetchData('next', 'pause_time')} 
-              ></FontAwesome.Button>
-            </ThemedText>
-              
-            <LineChart
-              data={chartData.pause_time}
-              segments={3}
-              width={Dimensions.get('window').width*0.95}
-              height={300}
-              yAxisSuffix={' pause'}
-              fromZero
-              chartConfig={{
-                decimalPlaces: 0,
-                backgroundGradientFrom: 'darkblue',
-                backgroundGradientTo: 'blue',
-                color: (opacity = 3) => `rgba(255, 255, 255, ${opacity})`,
-              }}
-              bezier
-            />
-          </View>
-      </ThemedView>*/
-      
-      
