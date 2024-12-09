@@ -18,7 +18,8 @@ export const customStyle = StyleSheet.create({
       flexDirection: 'row',
       gap: 8,
       display : 'flex',
-    },button: {
+    },
+    button: {
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 12,
@@ -26,7 +27,8 @@ export const customStyle = StyleSheet.create({
       borderRadius: 4,
       elevation: 3,
       backgroundColor: 'black',
-    },overlay: {
+    },
+    overlay: {
       position: 'absolute',
       top: 0,
       height: 300,
@@ -37,7 +39,8 @@ export const customStyle = StyleSheet.create({
       position: 'absolute',
       height: 300,
       backgroundColor: 'rgba(0,0,0,0)', // Transparent to simulate click-through
-    },legendContainer: {
+    },
+    legendContainer: {
       justifyContent: 'center',
       alignItems: 'center',
     },

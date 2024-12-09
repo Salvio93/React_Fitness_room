@@ -22,8 +22,6 @@ export default function SessionScreen() {
   const [datatext, setdataText] = useState(`${day} - ${month} - ${year}`);
 
   const handleFetchData = async() =>{
-
-
     try {
 
       //treat data for num_session of Json_data

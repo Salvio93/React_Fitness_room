@@ -27,6 +27,7 @@ export default function TabTwoScreen() {
           const current_data = await fetchData(dataType,frequence, today.getFullYear()-0);
           console.log(current_data)
 
+
           var dynamicKey = `${dataType}_year`;
           if (dataType == "num_visits"){
             var dynamicKey1 = `monthly_count`;
@@ -82,7 +83,6 @@ export default function TabTwoScreen() {
     
   };
   const handleBarPress = (label, index, dataType, year) => {
-    // Navigate to the details screen with query parameters
     router.push({
       pathname: '/monthly',
       params: { label, index, dataType, year },

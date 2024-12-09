@@ -14,25 +14,26 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
           humidity: 80,
           particulate: 50
         }
-      }
-         /*await axios.get('http://192.168.1.31:9090/api/air_quality', { //10.0.2.2 for android
+      }/*
+        const response = await axios.get('http://10.42.0.1:9000/api/air_quality', { 
           params: {},
         });*/
+
       return response;
     }
 
     if (dataType=="num_visits"){
       if (frequence=="yearly"){
         var date = year+"-"+month+"-"+day+"T00:00:00"
-        const response ={
+        const response = {
           num_visits_year : {
             year : year,
             year_count : 250,
-            monthly_count : [year-2020,20,21,22,23,2,24,2,25,2,26,20]
+            monthly_count : [year-2000,20,21,22,23,2,24,2,25,2,26,20]
           }
-        }
-         /*await axios.get('http://192.168.1.31:9090/api/number_of_sessions', { //10.0.2.2 for android
-          params: { frequence,0, date},
+        }/*
+        const response = await axios.get('http://10.42.0.1:9000/api/number_of_sessions', { //10.42.0.1 for android
+          params: { Frequency : frequence, UserID:0 , Date : date},
         });*/
         return response; 
 
@@ -49,8 +50,9 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
             weekly_count : [search_month,4,2,2,4]
         
           }
-        } /*await axios.get('http://192.168.1.31:9090/api/number_of_sessions', { //10.0.2.2 for android
-          params: { frequence,0, date },
+        } /*
+       const response = await axios.get('http://10.42.0.1:9000/api/number_of_sessions', { 
+          params: { frequence, UserID : 0, date },
         });*/
         return response; 
 
@@ -59,7 +61,7 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
         var search_month = monthList.indexOf(month) + 1;
         var search_week = 1 + (week*7);
         var date = year+"-"+search_month+"-"+search_week+"T00:00:00"
-
+        
         const response = {
           num_visits_week : {
             year : 2024,
@@ -69,9 +71,9 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
             daily_count : [search_month,search_week,1,0,2,1,0]
         
           }
-        }
-         /* await axios.get('http://192.168.1.31:9090/api/number_of_sessions', { //10.0.2.2 for android
-          params: {  frequence, 0 , date },
+        }/*
+        const response =  await axios.get('http://10.42.0.1:9000/api/number_of_sessions', {
+          params: {  frequence, UserID :0 , date },
         });*/
         return response; 
 
@@ -136,7 +138,7 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
         
         
         
-        /*await axios.get('http://192.168.1.31:9090/api/session_data', { //10.0.2.2 for android
+        /*await axios.get('http://192.168.1.31:9000/api/session_data', { //10.0.2.2 for android
           params: {  frequence ,0, date},
         });*/
         return response; 
@@ -148,16 +150,16 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
     if (dataType=="exo_time"){
       if (frequence=="yearly"){
         var date = year+"-"+month+"-"+day+"T00:00:00"
-
+        
         const response = {
           exo_time_year : {
             year : 2024,
             year_moy : "14:23",
-            monthly_moy : [year-2020,12,13,14,15,16,17,18,19,20,21,12] //moyenne = end-begin de chaque set
+            monthly_moy : [year-2000,12,13,14,15,16,17,18,19,20,21,12] //moyenne = end-begin de chaque set
           }
-        }
-         /*await axios.get('http://192.168.1.31:9090/api/mean_exercise_time', { //10.0.2.2 for android
-          params: {  frequence, 0,date},
+        }/*
+        const response = await axios.get('http://10.42.0.1:9000/api/mean_exercise_time', { 
+          params: {  Frequency :frequence, UserID:0,Date : date},
         });*/
         return response; 
 
@@ -173,9 +175,9 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
             weekly_moy : [search_month,5,6,4,5]
         
           }
-        }
-         /* await axios.get('http://192.168.1.31:9090/api/mean_exercise_time', { //10.0.2.2 for android
-          params: { frequence, 0 , date },
+        }/*
+        const response = await axios.get('http://10.42.0.1:9000/api/mean_exercise_time', { //10.0.2.2 for android
+          params: { frequence, UserID : 0 , date },
         });*/
         return response; 
 
@@ -195,8 +197,8 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
         
           }
         }
-        /* await axios.get('http://192.168.1.31:9090/api/mean_exercise_time', { //10.0.2.2 for android
-          params: { frequence,0,date },
+        /* await axios.get('http://10.42.0.1:9000/api/mean_exercise_time', { //10.0.2.2 for android
+          params: { frequence,UserID : 0,date },
         });*/
         return response; 
 
@@ -257,8 +259,8 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
             ]
           }
         }  
-        /*await axios.get('http://192.168.1.31:9090/api/session_data/detailed', { //10.0.2.2 for android
-          params: { 0, date},
+        /*await axios.get('http://10.42.0.1:9090/api/session_data/detailed', { //10.0.2.2 for android
+          params: { UserID : 0, date},
         });*/
         return response; 
 
@@ -315,7 +317,7 @@ export const fetchData = async (dataType, frequence,year=0,month=0,week=0,day=0)
             ]
           }
         }  
-        /*await axios.get('http://192.168.1.31:9090/api/session_data/last', { //10.0.2.2 for android
+        /*await axios.get('http://10.42.0.1:9000/api/session_data/last', { //10.0.2.2 for android
           params: {},
         });*/
         return response; 

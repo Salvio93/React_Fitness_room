@@ -24,7 +24,7 @@ export default function DailyScreen() {
     num_visits: {  data_page:0, sessions_count : 0, Json_data : [{  }]  },
 
   });
-  const [text, setText] = useState(`${dayList[index]} of ${week} - ${month} - ${year}`); //to update text 
+  const [text, setText] = useState(`${dayList[index]} - ${week} - ${month} - ${year}`); //to update text 
   const [datatext, setdataText] = useState(`init data`); 
 
 
@@ -105,7 +105,8 @@ export default function DailyScreen() {
       
       <ThemedView style={[styles.titleContainer,{display: dataType=="exo_time" ? 'flex' : 'none'}]}>
             
-            <ThemedText>Temps de seance par session à la date du {text}</ThemedText> 
+            <ThemedText>Temps de seance par session à la date du : {text}</ThemedText> 
+
             <View style={[styles.chartContainer, {left:-310, bottom:-60}]}>
               <ThemedText>
                     <FontAwesome.Button
@@ -146,7 +147,7 @@ export default function DailyScreen() {
           </ThemedView>
       
       <ThemedView style={[styles.titleContainer,{display: dataType=="num_visits" ? 'flex' : 'none'}]}>
-        <ThemedText>Information de seance à la date du {text} </ThemedText> 
+        <ThemedText>Information de seance à la date du  {text} </ThemedText> 
 
 
         <View style={[styles.stepContainer, {left:-350, bottom:-50}]}>
@@ -157,9 +158,8 @@ export default function DailyScreen() {
                       size={10}
                       onPress={() => handleFetchData('previous', 'num_visits')} 
                     ></FontAwesome.Button>
-                    {'                                       '}
-
-                    {'                                       '}
+                    {'                                 '}
+                    {'                                   '}
                     <FontAwesome.Button
                       name="chevron-right"
                       backgroundColor="green"
@@ -177,7 +177,7 @@ export default function DailyScreen() {
                   <View style={styles.stepContainer} key={`button-${indexj}`}>
                     <ThemedText>  {"\n"}
                       Nombre de serie pour la seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0"} {"\n"}
-                      temps de la seance {indexj+1}:{chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.session_duration ?? "0"}{"\n"}
+                      temps de la seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.session_duration ?? "0"}{"\n"}
                     </ThemedText>
 
                     {Array.from({ length: chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0" }).map((_, indexi) => (

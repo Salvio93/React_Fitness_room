@@ -64,6 +64,14 @@ export default function TabLayout() {
       name="session_detail"
       options={{ href: null, }}
     />
+    <Tabs.Screen
+      name="api_fetch"
+      options={{ href: null, }}
+    />
+    <Tabs.Screen
+      name="style"
+      options={{ href: null, }}
+    />
 
     </Tabs>
   );

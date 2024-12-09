@@ -79,12 +79,12 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Données env</ThemedText>
         <ThemedText>
-          température : <ThemedText type="defaultSemiItalic">{data.body.height}</ThemedText> {'         '}
-          humidité : <ThemedText type="defaultSemiItalic">{data.body.weight}</ThemedText>
+          température : <ThemedText type="defaultSemiItalic">{chartData.air_quality.temperature}</ThemedText> {'         '}
+          humidité : <ThemedText type="defaultSemiItalic">{chartData.air_quality.humidity}</ThemedText>
         </ThemedText>
 
         <ThemedText>
-          particule : <ThemedText type="defaultSemiItalic">{data.body.age}</ThemedText>{'                 '}
+          particule : <ThemedText type="defaultSemiItalic">{chartData.air_quality.particulate}</ThemedText>{'                 '}
         </ThemedText>
       </ThemedView>
 

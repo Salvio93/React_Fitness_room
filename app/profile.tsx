@@ -59,12 +59,7 @@ export default function TabThreeScreen() {
           <ThemedText>Modify Parameters</ThemedText>
 
           <View style={styles.inputContainer}>
-            <ThemedText>Name</ThemedText>
-            <TextInput
-              style={styles.input}
-              value={jsonData.name}
-              onChangeText={(value) => handleInputChange('name', value)}
-            />
+           
 
             <ThemedText>Height (cm)</ThemedText>
             <TextInput
