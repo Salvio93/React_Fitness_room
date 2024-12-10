@@ -9,19 +9,19 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
     console.log(dataType,frequence,year,month,week,day)
     
     if (dataType == "air_quality"){
-      /*const response = {
+      const response = {
         env_data: {
           temperature: 22,
           humidity: 80,
           particulate: 50
         }
-      }*/
+      }/*
         const response = await axios.get(ip+'air_quality', { 
           params: {},
-        });
-        console.log(response.data)
+        });*/
+        console.log(response)
 
-      return response.data;
+      return response;
     }
 
     if (dataType=="num_visits"){
@@ -33,19 +33,19 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
           day = "0"+day
         }
         var date = year+"-"+month+"-"+day+"T00:00:00"
-        /*const response = {
+        const response = {
           num_visits_year : {
             year : year,
             year_count : 250,
             monthly_count : [year-2000,20,21,22,23,2,24,2,25,2,26,20]
           }
-        }*/
+        }/*
         const response = await axios.get(ip+'number_of_sessions', { 
           params: { Frequency : "Year", UserID: 1 , Date : date},
-        });
-        console.log(response.data)
+        });*/
+        console.log(response)
 
-        return response.data; 
+        return response; 
 
       }
       if (frequence=="monthly"){
@@ -59,7 +59,7 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
         }
         var date = year+"-"+search_month+"-"+day+"T00:00:00"
 
-        /*const response = {
+        const response = {
           num_visits_month : {
             year : 2024,
             month : 12,
@@ -67,11 +67,11 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
             weekly_count : [search_month,4,2,2,4]
         
           }
-        } */
+        } /*
         const response = await axios.get(ip+'number_of_sessions', { 
           params: { Frequency : "Month", UserID: 1 , Date : date},
-        });
-        return response.data; 
+        });*/
+        return response; 
 
       }
       if (frequence=="weekly"){
@@ -87,7 +87,7 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
 
         var date = year+"-"+search_month+"-"+search_week+"T00:00:00"
         
-        /*const response = {
+        const response = {
           num_visits_week : {
             year : 2024,
             month : 12, 
@@ -95,16 +95,14 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
             week_count : 4,
             daily_count : [search_month,search_week,1,0,2,1,0]
         
-          }*/
-        }
+          }
+        }/*
         const response = await axios.get(ip+'number_of_sessions', { 
           params: { Frequency : "Week", UserID: 1 , Date : date},
-        });
-        return response.data; 
-
+        });*/
+        return response; 
       }
       if (frequence=="daily"){
-        console.log("-------------------------------------------")
         var search_month = monthList.indexOf(month) + 1;
         var search_day =  day-1+2 + (7*(weekList.indexOf(week)));
 
@@ -115,9 +113,8 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
           search_day = "0"+search_day
         }
         var date = year+"-"+search_month+"-"+search_day+"T00:00:00"
-
-        /*const response = {
-          exo_time_day: {
+        
+          const response = {
             year: year,
             month: search_month,
             day: search_day,
@@ -135,8 +132,8 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
                     weight: 20,
                     rep: 12,
                     set_time: "set.endDate - set.beginDate",
-                    distance: [0,3,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,5],
-                    times: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18']
+                    distance: [0,3,5,5,6,7,8,6,5,2,0,0,0,0,2,5,5,4,2,0,2,4,5,6,8,8,5,3,0,2,3,5,8,7,5,3,0],
+                    times: ['0','10','20','30','40','50','60']
                   },
                   {
                     weight: 25,
@@ -165,18 +162,22 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
                 ]
               }
             ]
-          }
-        }  */
-        
-        
-        
-        const response = await axios.get(ip+'session_data/detailed', { 
-          params: {  Frequency : "Day", UserID: 1 , Date : date},
+          
+        }
+       
+
+        /*const response = await axios.get(ip+'session_count', { 
+          params: {UserID: 1 , Date : date},
         });
-        return response.data; 
+        */
+        
+        console.log(date)
+        console.log(response)
+        console.log("----")
+        return response; 
 
       }    
-    
+    }
 
     
     if(dataType=="exo_time"){
@@ -189,20 +190,20 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
         }
         var date = year+"-"+month+"-"+day+"T00:00:00"
         console.log(date)
-        /*const response = {
+        const response = {
           exo_time_year : {
             year : 2024,
             year_moy : "14:23",
             monthly_moy : [year-2000,12,13,14,15,16,17,18,19,20,21,12] //moyenne = end-begin de chaque set
           }
-        }*/
+        }/* 
           const response = await axios.get(ip+'mean_exercise_time', { 
             params: { Frequency : "Year", UserID: 1 , Date : date},
-          });
+          });*/
 
           
-          console.log(response.data);
-          return response.data;
+          console.log(response);
+          return response;
 
       }
       if (frequence=="monthly"){
@@ -214,7 +215,7 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
           day = "0"+day
         }
         var date = year+"-"+search_month+"-"+day+"T00:00:00"
-        /*const response = {
+        const response = {
           exo_time_month : {
             year : 2024,
             month : 10,
@@ -222,11 +223,11 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
             weekly_moy : [search_month,5,6,4,5]
         
           }
-        }*/
+        }/*
         const response = await axios.get(ip+'mean_exercise_time', { 
           params: { Frequency : "Month", UserID: 1 , Date : date},
-        });
-        return response.data; 
+        });*/
+        return response; 
 
       }
       if (frequence=="weekly"){
@@ -242,7 +243,7 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
         }
         var date = year+"-"+search_month+"-"+search_week+"T00:00:00"
 
-        /*const response = {
+        const response = {
           exo_time_week : {
             year : 2024,
             month : 12,
@@ -251,11 +252,11 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
             daily_moy : [search_month,search_week,8,7,6,5,7]
         
           }
-        }*/
+        }/*
         const response = await axios.get(ip+'mean_exercise_time', { 
           params: { Frequency : "Week", UserID: 1 , Date : date},
-        });
-        return response.data; 
+        });*/
+        return response; 
 
       }
       if (frequence=="daily"){
@@ -270,8 +271,7 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
         }
         var date = year+"-"+search_month+"-"+search_day+"T00:00:00"
 
-        /*const response = {
-          exo_time_day: {
+        const response = {
             year: year,
             month: search_month,
             day: search_day,
@@ -319,12 +319,12 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
                 ]
               }
             ]
-          }
-        }  */
-        const response = await axios.get(ip+'session_data/detailed', { 
+          
+        }  /*
+        const response = await axios.get(ip+'session_count', { 
           params: { Frequency : "Day", UserID: 1 , Date : date},
-        });
-        return response.data; 
+        });*/
+        return response; 
 
       }    
       if (frequence=="last"){
@@ -380,17 +380,19 @@ export const fetchData = async (dataType, frequence,year=0,month=1,week=1,day=1)
           }
         }  */
         
-        const response = await axios.get(ip+'session_data/detailed', { 
-            params: { Frequency : "Day", UserID: 1 , Date : date},
+        const response = await axios.get(ip+'session_count', { 
+            params: { UserID: 1 , Date : date},
           });
-          return response.data; 
+
+          return response; 
 
       }  
         
-    }
+     
+
+  }
     
     
-    return response; 
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;

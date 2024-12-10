@@ -10,7 +10,6 @@ import { ThemedView } from '@/components/ThemedView';
 import { TouchableOpacity } from 'react-native';
 import {customStyle} from './style';
 import { HelloWave } from '@/components/HelloWave';
-import data from './test.json';
 
 export default function HomeScreen() {
 
@@ -57,6 +56,14 @@ export default function HomeScreen() {
     //handleFetchData("exo_time")
 
     console.log('end fetch')
+    // Set up interval to fetch data every 5 seconds
+    const intervalId = setInterval(() => {
+      console.log('Fetching data...');
+      handleFetchData('air_quality');
+    }, 50000);
+
+    // Cleanup the interval when component unmounts
+    return () => clearInterval(intervalId);
   },[])
   
   return (

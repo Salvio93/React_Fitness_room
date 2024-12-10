@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View,  Dimensions,Alert } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { fetchData } from './api_fetch'; 
-
 import { LineChart,BarChart } from 'react-native-chart-kit';
-import { Collapsible } from '@/components/Collapsible';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import {customStyle} from './style';
@@ -19,18 +16,26 @@ export default function SessionScreen() {
   console.log(session_num + '-'+'- '+year +' - '+month+ ' - '+day)
 
 
+  const [chartData, setChartData] = useState({
+    parsedJsonData: [{ }],
+  });
   const [datatext, setdataText] = useState(`${day} - ${month} - ${year}`);
+
 
   const handleFetchData = async() =>{
     try {
+      var JsonData = JSON.parse(Json_data);
+      console.log('Parsed JSON Data:', JsonData);  
+      setChartData((prevData) => ({ 
+        ...prevData,
+        parsedJsonData: JsonData
+      }));
+      setdataText(`${dayList[day]} ${JsonData.day} ${month} ${year}`);
 
-      //treat data for num_session of Json_data
-        setdataText(`${dayList[day]}  ${parsedJsonData.exo_time_day.day} - ${month} - ${year} -`);
-
+      
     } catch (error) {
-      console.error(`Failed to fetch current data:`, error);
+      console.error('Failed to parse JSON data:', error);
     }
-    
   };
   
 
@@ -39,19 +44,8 @@ export default function SessionScreen() {
     console.log('start fetch')
     handleFetchData()
     console.log('end fetch')
+  },[])
 
-    const updatedStyles = { ...customStyle };
-    updatedStyles.titleContainer = {
-    ...updatedStyles.titleContainer,
-    display: "flex",
-    };
-    styles = updatedStyles; 
-
-  },)
-    
-  var parsedJsonData = JSON.parse(Json_data)
-  console.log( parsedJsonData.exo_time_day)
-  const sessionSets = parsedJsonData?.exo_time_day?.sessions?.[session_num - 1]?.sets || [];
   return (
 
     <ParallaxScrollView
@@ -61,36 +55,40 @@ export default function SessionScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="title">{datatext}</ThemedText>
         <View style={styles.stepContainer}>
-          <ThemedText>
-            Amplitude for session {session_num} with {sessionSets.length} set(s)
-          </ThemedText>
+        <ThemedText>Amplitude for session {session_num} with {chartData.parsedJsonData?.sessions?.[session_num - 1]?.sets?.length} set</ThemedText>
 
-          {sessionSets.length > 0 ? (
-            sessionSets.map((set, index) => (
-              <View key={`chart-${session_num}-${index}`} style={styles.stepContainer}>
-                <ThemedText>Set {index + 1}</ThemedText>
+          {chartData.parsedJsonData?.sessions?.[session_num - 1]?.sets?.length > 0 ? (
+            
+            chartData.parsedJsonData?.sessions?.[session_num - 1]?.sets.map((set, index) => (
+              <View key={`chart-${session_num}-${index}`} style={[styles.stepContainer,{left:-10}]}>
+                <ThemedText>Set {index + 1} Weight {set?.weight}</ThemedText>
                 <LineChart
                   data={{
-                    labels: set?.times || [],
+                    labels: set?.times || [0],
                     datasets: [
                       {
-                        data: set?.distance || [],
+                        data: set?.distance || [0],
                       },
                     ],
                   }}
-                  segments={3}
+                  segments={4}
                   width={Dimensions.get('window').width * 0.95}
                   height={300}
                   yAxisSuffix=""
                   fromZero
+                  withDots= {false}
+                  withInnerLines = {false}
                   chartConfig={{
-                    barPercentage: .68,
                     backgroundGradientFrom: '#1E2923',
-                    backgroundGradientTo: '#08130D',
+                    backgroundGradientTo: '#08480D',
                     decimalPlaces: 0,
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    color: (opacity = 1) => `rgba(120, 255, 255, ${opacity})`,
                   }}
                   bezier
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 16
+                  }}
                 />
               </View>
             ))

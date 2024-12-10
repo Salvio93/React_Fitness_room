@@ -148,12 +148,18 @@ export default function WeeklyScreen() {
               width={Dimensions.get('window').width*0.95}
               height={300}
               fromZero
+              withInnerLines = {false}
               chartConfig={{
                 barPercentage: .68,
                 backgroundGradientFrom: '#1E2923',
-                backgroundGradientTo: '#08130D',
+                backgroundGradientTo: '#08480D',
                 decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                color: (opacity = 1) => `rgba(120, 255, 255, ${opacity})`,
+              }}
+              
+              style={{
+                marginVertical: 8,
+                borderRadius: 16
               }}
             />
             <View style={styles.overlay}>
@@ -209,12 +215,18 @@ export default function WeeklyScreen() {
                   width={Dimensions.get('window').width*0.95}
                   height={300}
                   fromZero
+                  withInnerLines = {false}
                   chartConfig={{
                     barPercentage: .68,
                     backgroundGradientFrom: '#1E2923',
-                    backgroundGradientTo: '#08130D',
+                    backgroundGradientTo: '#08480D',
                     decimalPlaces: 0,
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    color: (opacity = 1) => `rgba(120, 255, 255, ${opacity})`,
+                  }}
+              
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 16
                   }}
                 />
                 <View style={styles.overlay}>

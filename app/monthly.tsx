@@ -152,12 +152,18 @@ export default function MonthlyScreen() {
               width={Dimensions.get('window').width*0.95}
               height={300}
               fromZero
+              withInnerLines = {false}
               chartConfig={{
                 barPercentage: .68,
                 backgroundGradientFrom: '#1E2923',
-                backgroundGradientTo: '#08130D',
+                backgroundGradientTo: '#08480D',
                 decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                color: (opacity = 1) => `rgba(120, 255, 255, ${opacity})`,
+              }}
+              
+              style={{
+                marginVertical: 8,
+                borderRadius: 16
               }}
             />
             <View style={styles.overlay}>
@@ -213,13 +219,18 @@ export default function MonthlyScreen() {
                   width={Dimensions.get('window').width*0.95}
                   height={300}
                   fromZero
-                  chartConfig={{
-                    barPercentage: .68,
-                    backgroundGradientFrom: '#1E2923',
-                    backgroundGradientTo: '#08130D',
-                    decimalPlaces: 0,
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                  }}
+                  withInnerLines = {false}
+              chartConfig={{
+                barPercentage: .68,
+                backgroundGradientFrom: '#1E2923',
+                backgroundGradientTo: '#08480D',
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(120, 255, 255, ${opacity})`,
+              }}
+              style={{
+                marginVertical: 8,
+                borderRadius: 16
+              }}
                 />
                 <View style={styles.overlay}>
 
@@ -250,66 +261,5 @@ export default function MonthlyScreen() {
     </ParallaxScrollView>
   );
 }
-
-      
-/*
-      <ThemedView style={[styles.titleContainer,{display: dataType=="pause_time" ? 'flex' : 'none'}]}>
-        <ThemedText>Temps de pause moyen par seance</ThemedText> 
-        <View style={[styles.chartContainer, {left:-290, bottom:-50}]}>
-        <ThemedText>
-              <FontAwesome.Button
-                name="chevron-left"
-                backgroundColor="green"
-                size={10}
-                onPress={() => handleFetchData('previous', 'pause_time')} 
-              ></FontAwesome.Button>
-              {'               '}
-              <View style={styles.legendContainer}><ThemedText> {text} </ThemedText></View>
-
-              {'                  '}
-              <FontAwesome.Button
-                name="chevron-right"
-                backgroundColor="green"
-                size={10}
-                onPress={() => handleFetchData('next', 'pause_time')} 
-              ></FontAwesome.Button>
-            </ThemedText>
-              
-            <BarChart
-              data={chartData.pause_time}
-              width={Dimensions.get('window').width*0.95}
-              height={300}
-              fromZero
-              chartConfig={{
-                barPercentage: .68,
-                backgroundGradientFrom: '#1E2923',
-                backgroundGradientTo: '#08130D',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              }}
-            />
-            <View style={styles.overlay}>
-
-              {chartData.pause_time?.datasets?.[0]?.data?.length > 0 &&
-                chartData.pause_time.labels?.length > 0 &&
-              chartData.pause_time.datasets[0].data.map((value, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.barArea,
-                    {
-                      height:200,
-                      top:50,
-                      left: (index*0.85 * Dimensions.get('window').width*0.95) / chartData.pause_time.labels.length + 70,
-                      width: Dimensions.get('window').width*0.95  / chartData.pause_time.labels.length ,
-                    },
-                  ]}
-                  onPress={() => handleBarPress(chartData.pause_time.labels[index], index,"pause_time",year,monthList[chartData.pause_time.data_page])}
-                />
-              ))}
-            </View>
-          </View>
-      </ThemedView>
- */
       
 var styles = customStyle;

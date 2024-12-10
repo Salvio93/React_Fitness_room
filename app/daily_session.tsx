@@ -31,19 +31,21 @@ export default function DailyScreen() {
   const handleFetchData = async(direction : string, dataType: string, frequence='daily') =>{
     try {
       if (direction==="current"){
+          console.log(direction,dataType)
           var current_data = await fetchData(dataType,frequence,year,month,week,index); 
           console.log(current_data)
+          
 
           setChartData((prevData) => ({ 
             ...prevData,
             [dataType]: {
               data_page : index,
-              sessions_count : current_data.exo_time_day.sessions.length,
+              sessions_count : current_data.sessions.length,
               Json_data : current_data,
             },
           }));
           setText(`${dayList[index]} - ${week}- ${month} - ${year}`);
-          setdataText(`${current_data.exo_time_day?.sessions?.length ?? "0"} - ${current_data.exo_time_day?.day ?? "0"}`);
+          setdataText(`${current_data.sessions?.length ?? "0"} - ${current_data?.day ?? "0"}`);
 
 
       }else{
@@ -57,13 +59,13 @@ export default function DailyScreen() {
               ...prevData,
               [dataType]: {
                 data_page : newPage,
-                sessions_count : newResp.exo_time_day.sessions.length,
+                sessions_count : newResp.sessions.length,
                 Json_data : newResp,
 
               },
             }));
             setText(`${dayList[newPage]} of ${week} - ${month} - ${year}`);
-            setdataText(`${chartData.exo_time.Json_data.exo_time_day?.sessions?.length ?? "0"} - ${newResp.exo_time_day?.day ?? "0"}`);
+            setdataText(`${chartData.exo_time.Json_data?.sessions?.length ?? "0"} - ${newResp?.day ?? "0"}`);
         }
       }
     } catch (error) {
@@ -129,7 +131,7 @@ export default function DailyScreen() {
               <View >
                 <ThemedText>{datatext}</ThemedText>
 
-                {Array.from({ length: chartData.exo_time.Json_data.exo_time_day?.sessions?.length ?? "0"}).map((_, index) => (
+                {Array.from({ length: chartData.exo_time.Json_data?.sessions?.length ?? "0"}).map((_, index) => (
                   <View key={`button-${index}`}>
                     <ThemedText>Detail session {index + 1}</ThemedText>
                     {/*debut session: {Json_data.exo_time_day.session_duration}  fin dession: {chartData.exo_time.datasets[index+1].end} */}  
@@ -169,18 +171,18 @@ export default function DailyScreen() {
               </ThemedText>
 
             <ThemedText>
-              Nombre de seance :   {chartData.num_visits.Json_data.exo_time_day?.sessions?.length ?? "0"} {"\n"} 
+              Nombre de seance :   {chartData.num_visits.Json_data?.sessions?.length ?? "0"} {"\n"} 
             </ThemedText>
 
             <View>
-                {Array.from({ length: chartData.num_visits.Json_data.exo_time_day?.sessions?.length ?? "0"}).map((_, indexj) => (
+                {Array.from({ length: chartData.num_visits.Json_data?.sessions?.length ?? "0"}).map((_, indexj) => (
                   <View style={styles.stepContainer} key={`button-${indexj}`}>
                     <ThemedText>  {"\n"}
-                      Nombre de serie pour la seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0"} {"\n"}
-                      temps de la seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.session_duration ?? "0"}{"\n"}
+                      Nombre de serie pour la seance {indexj+1} : {chartData.num_visits.Json_data?.sessions[indexj]?.sets?.length  ?? "0"} {"\n"}
+                      temps de la seance {indexj+1} : {chartData.num_visits.Json_data?.sessions[indexj]?.session_duration ?? "0"}{"\n"}
                     </ThemedText>
 
-                    {Array.from({ length: chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets?.length  ?? "0" }).map((_, indexi) => (
+                    {Array.from({ length: chartData.num_visits.Json_data?.sessions[indexj]?.sets?.length  ?? "0" }).map((_, indexi) => (
                       <View key={`button-${indexi}`}>
                         <ThemedView style={[styles.stepContainer,{display: indexi == 0 ? 'flex' : 'none'}]}>
                           <ThemedText>
@@ -195,8 +197,8 @@ export default function DailyScreen() {
                         </ThemedText>
                         </ThemedView>
                         
-                        <ThemedText>Nombre de poids et de rep pour serie {indexi+1} de seance {indexj+1} : {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.weight ?? "0"} - {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.rep ?? "0"} {"\n"}
-                          temps de serie {indexi+1}: {chartData.num_visits.Json_data.exo_time_day?.sessions[indexj]?.sets[indexi]?.set_time ?? "0"}{"\n"}
+                        <ThemedText>Nombre de poids et de rep pour serie {indexi+1} de seance {indexj+1} : {chartData.num_visits.Json_data?.sessions[indexj]?.sets[indexi]?.weight ?? "0"} - {chartData.num_visits.Json_data?.sessions[indexj]?.sets[indexi]?.rep ?? "0"} {"\n"}
+                          temps de serie {indexi+1}: {chartData.num_visits.Json_data?.sessions[indexj]?.sets[indexi]?.set_time ?? "0"}{"\n"}
                         </ThemedText>
                           
                         
