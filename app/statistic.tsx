@@ -37,7 +37,7 @@ export default function TabTwoScreen() {
             var dynamicKey1 = `monthly_moy`;
 
           }
-
+          console.log(current_data[dynamicKey][dynamicKey1] + "-----")
 
           setChartData((prevData) => ({
             ...prevData,
@@ -53,7 +53,7 @@ export default function TabTwoScreen() {
       }else{
 
         if ((chartData[dataType].data_page != 0 && direction==="previous") || (chartData[dataType].data_page != (today.getFullYear() -2000) && direction ==="next")){
-            var newPage = direction === 'previous' ? chartData[dataType].data_page - 1 : chartData[dataType].data_page+ 1;
+            var newPage = direction === "previous" ? chartData[dataType].data_page - 1 : chartData[dataType].data_page+ 1;
             const newResp = await fetchData(dataType,frequence, today.getFullYear()-newPage); // Fetch data from backend with page and data type
             
             console.log(newResp)
